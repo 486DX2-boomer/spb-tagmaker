@@ -1,4 +1,5 @@
 # Shoot Point Blank - Tag Maker
+
 **SPB internal use only**
 
 The goal for this is to improve time, efficiency, and ease of use when creating price tags, instead of using an Excel spreadsheet with macros/manually editing PDFs
@@ -54,3 +55,8 @@ Handgun tags are 2x3. Long gun tags are 3x5. There are 10 handgun tags per 8.5x1
 The font on the tags is Franklin Gothic Medium. 
 
 For the handgun tags, the price is written in approximately 65 pt font with the last two digits (the 99 cents) superscripted and approximately 34 pt font. The model name is approximately 12 pt font and the caliber is approximately 19 pt font. The SPB logo is in the top left and the manufacturer logo is on the top right, with an orangish-red separator bar between the price and the model and caliber. The hex value of the color of the separator bar is #D4582A. The separator bar is 2 pt in thickness.
+
+____
+
+## Package References
+https://godoc.org/github.com/jung-kurt/gofpdf

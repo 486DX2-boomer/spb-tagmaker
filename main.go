@@ -21,8 +21,10 @@ func main() {
 	// Creating a pdf
 	pdf := gofpdf.New("P", "mm", "A4", "")
 	pdf.AddPage()
-	pdf.SetFont("Arial", "B", 65)
-	pdf.Cell(40, 10, "Hello, world")
+	pdf.AddUTF8Font("Franklin Gothic Medium", "", "framd.ttf")
+	pdf.SetFont("Franklin Gothic Medium", "", 65)
+	pdf.Cell(40, 10, "9999")
+	pdf.SubWrite(-12, "99", 33, 0, 0, "")
 	err := pdf.OutputFileAndClose("hello.pdf")
 	fmt.Println(err)
 }
