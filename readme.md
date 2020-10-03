@@ -56,6 +56,8 @@ The font on the tags is Franklin Gothic Medium.
 
 For the handgun tags, the price is written in approximately 65 pt font with the last two digits (the 99 cents) superscripted and approximately 34 pt font. The model name is approximately 12 pt font and the caliber is approximately 19 pt font. The SPB logo is in the top left and the manufacturer logo is on the top right, with an orangish-red separator bar between the price and the model and caliber. The hex value of the color of the separator bar is #D4582A. The separator bar is 2 pt in thickness.
 
+For the long gun tags, the price is written in approximately 113 pt font with the last two digits superscripted and approximately 60 pt font. The model name is approximately 20 pt font and the caliber is approximately 29 pt font. 
+
 ____
 
 ## Package References
