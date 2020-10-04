@@ -58,6 +58,8 @@ For the handgun tags, the price is written in approximately 65 pt font with the 
 
 For the long gun tags, the price is written in approximately 113 pt font with the last two digits superscripted and approximately 60 pt font. The model name is approximately 20 pt font and the caliber is approximately 29 pt font. 
 
+Each tag has a discrete position on the page represented as a set of x, y coordinates. The information on that tag is then drawn to the page based on an offset from that position. So for example, if the first tag on the page starts at (44, 25), then the dollar sign is offset +5, +25. Storing offsets instead of concrete positions on the page allows for greater flexibility.
+
 ____
 
 ## Package References

@@ -18,13 +18,6 @@ func main() {
 	// If manufacturer logo isn't found in the /logos folder, query Google Images for a logo. Save the logo on the server for later
 	// The web server runs indefinitely, waiting for new tags or for the user to delete all tags in memory and start over.
 
-	// set up constants
-	const LongGunDollarFontSize float64 = 60
-	const LongGunPriceFontSize float64 = 113
-	const LongGunModelFontSize float64 = 20
-	const LongGunCaliberFontSize float64 = 20
-	const SPBTagFont string = "Franklin Gothic Medium"
-
 	// Creating a pdf
 	pdf := gofpdf.New("P", "mm", "A4", "")
 	pdf.AddPage()
