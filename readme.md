@@ -60,6 +60,8 @@ For the long gun tags, the price is written in approximately 113 pt font with th
 
 Each tag has a discrete position on the page represented as a set of x, y coordinates. The information on that tag is then drawn to the page based on an offset from that position. So for example, if the first tag on the page starts at (44, 25), then the dollar sign is offset +5, +25. Storing offsets instead of concrete positions on the page allows for greater flexibility.
 
+Cell width and font size will have to be dynamic based by the number of digits in the price and number of characters in the model name and caliber. So "9mm" will have a smaller font size and cell width than "6.5 Creedmoor" and a $4200 gun will have a narrower cell for the price than a $99 used gun. The values for this will have to be hand tuned as I'm not sure how to accomplish that mathematically unless I can determine the exact width of each character based on the font size.
+
 ____
 
 ## Package References
