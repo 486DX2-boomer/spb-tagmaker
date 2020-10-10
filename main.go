@@ -19,54 +19,88 @@ func main() {
 	// The web server runs indefinitely, waiting for new tags or for the user to delete all tags in memory and start over.
 
 	// Creating a pdf
-
-	// gofpdf.MakeFont("framd.ttf", "Franklin Gothic Medium.json", ".", nil, true)
 	pdf := gofpdf.New("P", "pt", "A4", "")
-
-	pdf.AddPage()
 	pdf.AddUTF8Font(SPBTagFont, "", "framd.ttf")
 	pdf.SetFont(SPBTagFont, "", 12) // Call set font with a default size to avoid compiler error
+	pdf.AddPage()
 
-	// draw 3x5 guides
-	pdf.MoveTo(125, 72)
-	pdf.LineTo((125 + 360), 72)
-	pdf.ClosePath()
-	pdf.SetLineWidth(0.5)
-	pdf.DrawPath("D")
+	var t Tag
+	t.Caliber = "5.56mm"
+	t.Manufacturer = "Daniel Defense"
+	t.Model = "DDM4V7"
+	t.New = true
+	t.Price = "1699"
+	t.TagSize = Big
 
-	pdf.SetXY(125, 72) // 0, 0 coordinate for tag 1
+	var tag1coord Coord
+	tag1coord.X = LongGunPageTag1PositionX
+	tag1coord.Y = LongGunPageTag1PositionY
 
-	// needed to set up image embed
-	var opt gofpdf.ImageOptions
-	// opt.ImageType = "png"
-	pdf.ImageOptions(".\\logos\\shootpointblank.png", 140, 81, SPBLogoWidth, 0, false, opt, 0, "")
-	pdf.ImageOptions(".\\logos\\daniel defense.jpg", 340, 81, LongGunManufacturerLogoWidth, 0, false, opt, 0, "")
+	DrawLongGunTag(t, tag1coord, pdf)
 
-	pdf.SetXY(140, 144) // Location of $ sign
-	pdf.SetFont(SPBTagFont, "", LongGunDollarFontSize)
-	pdf.Cell(45, 55, "$")
+	t.Caliber = "308 Winchester"
+	t.Manufacturer = "PTR Industries"
+	t.Model = "PTR91"
+	t.New = true
+	t.Price = "1029"
+	t.TagSize = Big
 
-	pdf.SetXY(188, 144)
-	pdf.SetFont(SPBTagFont, "", LongGunPriceFontSize)
-	pdf.Cell(270, 109, "1699")
-	pdf.SetFont(SPBTagFont, "", LongGunCentsFontSize)
-	pdf.Write(LongGunCentsFontSize, "99")
+	var tag2coord Coord
+	tag2coord.X = LongGunPageTag2PositionX
+	tag2coord.Y = LongGunPageTag2PositionY
 
-	pdf.SetXY(136, 256)
-	pdf.SetFont(SPBTagFont, "", LongGunModelFontSize)
-	pdf.Cell(113, 18, "DDM4V7")
+	DrawLongGunTag(t, tag2coord, pdf)
 
-	pdf.SetXY(356, 261)
-	pdf.SetFont(SPBTagFont, "", LongGunCaliberFontSize)
-	pdf.CellFormat(113, 18, "5.56x45", "", 0, "R", false, 0, "")
+	t.Caliber = "5.56x45mm"
+	t.Manufacturer = "Wilson Combat"
+	t.Model = "Protector"
+	t.New = true
+	t.Price = "1999"
+	t.TagSize = Big
 
-	// draw the red separator bar
-	pdf.MoveTo(135, 248)
-	pdf.LineTo((135 + 338), 248)
-	pdf.ClosePath()
-	pdf.SetLineWidth(2.5)
-	pdf.SetDrawColor(212, 88, 42)
-	pdf.DrawPath("D")
+	var tag3coord Coord
+	tag3coord.X = LongGunPageTag3PositionX
+	tag3coord.Y = LongGunPageTag3PositionY
+
+	DrawLongGunTag(t, tag3coord, pdf)
+
+	pdf.AddPage()
+
+	t.Caliber = "5.56mm"
+	t.Manufacturer = "Daniel Defense"
+	t.Model = "DDM4V11"
+	t.New = true
+	t.Price = "1729"
+	t.TagSize = Big
+
+	tag1coord.X = LongGunPageTag1PositionX
+	tag1coord.Y = LongGunPageTag1PositionY
+
+	DrawLongGunTag(t, tag1coord, pdf)
+
+	t.Caliber = "308 Winchester"
+	t.Manufacturer = "PTR Industries"
+	t.Model = "PTR A3S K"
+	t.New = true
+	t.Price = "1029"
+	t.TagSize = Big
+
+	tag2coord.X = LongGunPageTag2PositionX
+	tag2coord.Y = LongGunPageTag2PositionY
+
+	DrawLongGunTag(t, tag2coord, pdf)
+
+	t.Caliber = "12 GA"
+	t.Manufacturer = "Wilson Combat"
+	t.Model = "Border Patrol"
+	t.New = true
+	t.Price = "1135"
+	t.TagSize = Big
+
+	tag3coord.X = LongGunPageTag3PositionX
+	tag3coord.Y = LongGunPageTag3PositionY
+
+	DrawLongGunTag(t, tag3coord, pdf)
 
 	err := pdf.OutputFileAndClose("hello.pdf")
 	fmt.Println(err)
