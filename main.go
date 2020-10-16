@@ -36,7 +36,8 @@ func main() {
 	tag1coord.X = LongGunPageTag1PositionX
 	tag1coord.Y = LongGunPageTag1PositionY
 
-	DrawLongGunTag(t, tag1coord, pdf)
+	// DrawLongGunTag(t, tag1coord, pdf)
+	t.Draw(tag1coord, pdf)
 
 	t.Caliber = "308 Winchester"
 	t.Manufacturer = "PTR Industries"
@@ -49,7 +50,8 @@ func main() {
 	tag2coord.X = LongGunPageTag2PositionX
 	tag2coord.Y = LongGunPageTag2PositionY
 
-	DrawLongGunTag(t, tag2coord, pdf)
+	// DrawLongGunTag(t, tag2coord, pdf)
+	t.Draw(tag2coord, pdf)
 
 	t.Caliber = "5.56x45mm"
 	t.Manufacturer = "Wilson Combat"
@@ -62,7 +64,8 @@ func main() {
 	tag3coord.X = LongGunPageTag3PositionX
 	tag3coord.Y = LongGunPageTag3PositionY
 
-	DrawLongGunTag(t, tag3coord, pdf)
+	// DrawLongGunTag(t, tag3coord, pdf)
+	t.Draw(tag3coord, pdf)
 
 	pdf.AddPage()
 
@@ -104,4 +107,5 @@ func main() {
 
 	err := pdf.OutputFileAndClose("hello.pdf")
 	fmt.Println(err)
+	fmt.Println("PDF generated")
 }
