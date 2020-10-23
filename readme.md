@@ -78,6 +78,11 @@ After that I will need a Build function that will run through all the tags store
 
 Once all of that is working, it only needs to be hooked up to a web server. The frontend of the web app will be a simple HTML form that adds the tag from the data entered in the form. That will be the most time consuming and difficult part, as I have no idea how to do web apps in Go and the tutorials available aren't much help.
 
+10/23/2020
+Added in the handgun tag logic, so it can now generate long gun and handgun tags. Next up is to be able to take in an array of tags and generate the entire PDF in one go, sorting handgun and long gun tags into their proper places. Also need to add used firearm tags and be able to mix new and used on the same page.
+There are certain CellFormat() calls that need to be changed so that the cell dimensions are constants.
+Handgun tags are smaller so the manufacturer logos require a fixed width and height. The aspect ratios of the logos are distorted. It is ugly, but the only viable way to do it right now until I add in logic to calculate the aspect ratio of the loaded image and attempt to maintain it, which is low on my priority list.
+
 ____
 
 ## Package References

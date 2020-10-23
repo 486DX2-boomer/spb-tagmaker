@@ -14,6 +14,9 @@ const (
 	Small = true
 )
 
+// SPBTagFont is the font family used for all price tags
+const SPBTagFont string = "Franklin Gothic Medium"
+
 // Long gun 3x5 dimensions in points: 360 x 216 pt
 
 // Long gun SPB logo offset : 13, 9
@@ -21,12 +24,14 @@ const (
 // Long gun $ sign offset : 13, 72
 // Long gun price offset : 62, 72
 
-// Hand gun 2x3 dimensions in points:
+// Hand gun 2x3 dimensions in points: 216 x 144 pt
 
 // Hand gun SPB logo offset :
 // Hand gun manufacturer logo offset :
 // Hand gun $ sign offset :
 // Hand gun price offset :
+
+// Long gun constants
 
 // LongGunSPBLogoWidth defines the SPB logo width in pts
 const LongGunSPBLogoWidth float64 = 129
@@ -41,7 +46,6 @@ const (
 	LongGunCentsFontSize   float64 = 60
 	LongGunModelFontSize   float64 = 20
 	LongGunCaliberFontSize float64 = 20
-	SPBTagFont             string  = "Franklin Gothic Medium"
 )
 
 // The top left coordinates of each long gun tag per 8.5x11 page in pts
@@ -80,14 +84,91 @@ const (
 	LongGunCaliberOffsetY float64 = 189
 )
 
+// Handgun constants
+
+// HandgunSPBLogoWidth defines the SPB logo width in pts
+const HandgunSPBLogoWidth float64 = 92
+
+// HandgunManufacturerLogoWidth defines the width of the manufacturer's logo in pts
+const HandgunManufacturerLogoWidth float64 = 54
+
+// HandgunManufacturerLogoHeight defines the height of the manufacturer's logo in pts
+const HandgunManufacturerLogoHeight float64 = 32
+
+// Font sizes and font family
+const (
+	HandgunDollarFontSize  float64 = 34
+	HandgunPriceFontSize   float64 = 58
+	HandgunCentsFontSize   float64 = 34
+	HandgunModelFontSize   float64 = 12
+	HandgunCaliberFontSize float64 = 12
+)
+
+// The top left coordinates of each handgun tag per 8.5x11 page in pts
+const (
+	HandgunPageTag1PositionX float64 = 90
+	HandgunPageTag1PositionY float64 = 28
+
+	HandgunPageTag2PositionX float64 = 305
+	HandgunPageTag2PositionY float64 = 28
+
+	HandgunPageTag3PositionX float64 = 90
+	HandgunPageTag3PositionY float64 = 172
+
+	HandgunPageTag4PositionX float64 = 305
+	HandgunPageTag4PositionY float64 = 172
+
+	HandgunPageTag5PositionX float64 = 90
+	HandgunPageTag5PositionY float64 = 316
+
+	HandgunPageTag6PositionX float64 = 305
+	HandgunPageTag6PositionY float64 = 316
+
+	HandgunPageTag7PositionX float64 = 90
+	HandgunPageTag7PositionY float64 = 460
+
+	HandgunPageTag8PositionX float64 = 305
+	HandgunPageTag8PositionY float64 = 460
+
+	HandgunPageTag9PositionX float64 = 90
+	HandgunPageTag9PositionY float64 = 604
+
+	HandgunPageTag10PositionX float64 = 305
+	HandgunPageTag10PositionY float64 = 604
+)
+
+// The coordinate offsets for the handgun tag in pts
+const (
+	HandgunSPBLogoOffsetX float64 = 7
+	HandgunSPBLogoOffsetY float64 = 20
+
+	HandgunManufacturerLogoOffsetX float64 = 130
+	HandgunManufacturerLogoOffsetY float64 = 20
+
+	HandgunDollarSignOffsetX float64 = 7
+	HandgunDollarSignOffsetY float64 = 64
+
+	HandgunPriceOffsetX float64 = 34
+	HandgunPriceOffsetY float64 = 64
+
+	HandgunSeparatorBarOffsetX float64 = 7
+	HandgunSeparatorBarOffsetY float64 = 120
+
+	HandgunModelOffsetX float64 = 7
+	HandgunModelOffsetY float64 = 130
+
+	HandgunCaliberOffsetX float64 = 160
+	HandgunCaliberOffsetY float64 = 130
+)
+
 // Separator bar constants
 const (
 	SeparatorBarLineWidth     float64 = 2.5
 	LongGunSeparatorBarLength float64 = 338
-	// HandGunSeparatorBarLength
-	SeparatorBarColorR int = 212
-	SeparatorBarColorG int = 88
-	SeparatorBarColorB int = 42
+	HandgunSeparatorBarLength float64 = 200
+	SeparatorBarColorR        int     = 212
+	SeparatorBarColorG        int     = 88
+	SeparatorBarColorB        int     = 42
 )
 
 // Tag type defines all relevant information to be stored in the List and provided to the tag draw function
@@ -110,58 +191,6 @@ type Coord struct {
 }
 
 // Constructor function for tag should go here
-
-// DrawLongGunTag accepts a single tag and draws it to the coordinate specified. Deprecate in favor of Tag.Draw() method
-func DrawLongGunTag(tag Tag, zero Coord, pdf *gofpdf.Fpdf) {
-
-	// // draw 3x5 guides
-	// pdf.MoveTo(125, 72)
-	// pdf.LineTo((125 + 360), 72)
-	// pdf.ClosePath()
-	// pdf.SetLineWidth(0.5)
-	// pdf.DrawPath("D")
-
-	// pdf.SetXY(125, 72) // 0, 0 coordinate for tag 1
-
-	// needed to set up image embed
-	var opt gofpdf.ImageOptions
-	// opt.ImageType = "png"
-
-	// Add the SPB logo
-	pdf.ImageOptions(".\\logos\\shootpointblank.png", (zero.X + LongGunSPBLogoOffsetX), (zero.Y + LongGunSPBLogoOffsetY), LongGunSPBLogoWidth, 0, false, opt, 0, "")
-
-	// get logo path
-	// This needs to be changed to accept .png and other file types
-	LogoPath := (".\\logos\\" + tag.Manufacturer + ".jpg")
-
-	pdf.ImageOptions(LogoPath, (zero.X + LongGunManufacturerLogoOffsetX), (zero.Y + LongGunManufacturerLogoOffsetY), LongGunManufacturerLogoWidth, 0, false, opt, 0, "")
-
-	pdf.SetXY((zero.X + LongGunDollarSignOffsetX), (zero.Y + LongGunDollarSignOffsetY)) // Location of $ sign
-	pdf.SetFont(SPBTagFont, "", LongGunDollarFontSize)
-	pdf.Cell(45, 55, "$")
-
-	pdf.SetXY((zero.X + LongGunPriceOffsetX), (zero.Y + LongGunPriceOffsetY))
-	pdf.SetFont(SPBTagFont, "", LongGunPriceFontSize)
-	pdf.Cell(270, 109, tag.Price)
-	pdf.SetFont(SPBTagFont, "", LongGunCentsFontSize)
-	pdf.Write(LongGunCentsFontSize, "99")
-
-	pdf.SetXY((zero.X + LongGunModelOffsetX), (zero.Y + LongGunModelOffsetY))
-	pdf.SetFont(SPBTagFont, "", LongGunModelFontSize)
-	pdf.CellFormat(113, 18, tag.Model, "", 0, "L", false, 0, "")
-
-	pdf.SetXY((zero.X + LongGunCaliberOffsetX), (zero.Y + LongGunCaliberOffsetY))
-	pdf.SetFont(SPBTagFont, "", LongGunCaliberFontSize)
-	pdf.CellFormat(113, 18, tag.Caliber, "", 0, "R", false, 0, "")
-
-	// draw the red separator bar
-	pdf.MoveTo((zero.X + LongGunSeparatorBarOffsetX), (zero.Y + LongGunSeparatorBarOffsetY))
-	pdf.LineTo((zero.X + LongGunSeparatorBarLength), (zero.Y + LongGunSeparatorBarOffsetY))
-	pdf.ClosePath()
-	pdf.SetLineWidth(SeparatorBarLineWidth)
-	pdf.SetDrawColor(SeparatorBarColorR, SeparatorBarColorB, SeparatorBarColorG)
-	pdf.DrawPath("D")
-}
 
 // GetLogoImagePath returns a gif, jpeg, or png in the logos directory. fileName should NOT include the extension. Defaults to blank.png if not found
 func GetLogoImagePath(fileName string) string {
@@ -214,13 +243,11 @@ func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
 
 		// needed to set up image embed
 		var opt gofpdf.ImageOptions
-		// opt.ImageType = "png"
 
 		// Add the SPB logo
 		pdf.ImageOptions(".\\logos\\shootpointblank.png", (zero.X + LongGunSPBLogoOffsetX), (zero.Y + LongGunSPBLogoOffsetY), LongGunSPBLogoWidth, 0, false, opt, 0, "")
 
 		// get logo path
-		// This needs to be changed to accept .png and other file types
 		LogoPath := (GetLogoImagePath(t.Manufacturer))
 
 		pdf.ImageOptions(LogoPath, (zero.X + LongGunManufacturerLogoOffsetX), (zero.Y + LongGunManufacturerLogoOffsetY), LongGunManufacturerLogoWidth, 0, false, opt, 0, "")
@@ -230,7 +257,7 @@ func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
 		pdf.Cell(45, 55, "$")
 
 		pdf.SetXY((zero.X + LongGunPriceOffsetX), (zero.Y + LongGunPriceOffsetY))
-		// Scale down the LongGunPriceFontSize based on number of digits in the price
+		// fontSizeOffset is used to scale down the LongGunPriceFontSize based on number of digits in the price
 		var fontSizeOffset float64
 		if len(t.Price) <= 3 {
 			fontSizeOffset = 0
@@ -276,8 +303,71 @@ func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
 		pdf.SetLineWidth(SeparatorBarLineWidth)
 		pdf.SetDrawColor(SeparatorBarColorR, SeparatorBarColorB, SeparatorBarColorG)
 		pdf.DrawPath("D")
+
 	} else if t.TagSize == Small {
-		return
+		// draw a handgun tag
+
+		// needed to set up image embed
+		var opt gofpdf.ImageOptions
+
+		// Add the SPB logo
+		pdf.ImageOptions(".\\logos\\shootpointblank.png", (zero.X + HandgunSPBLogoOffsetX), (zero.Y + HandgunSPBLogoOffsetY), HandgunSPBLogoWidth, 0, false, opt, 0, "")
+
+		// get logo path
+		LogoPath := (GetLogoImagePath(t.Manufacturer))
+
+		pdf.ImageOptions(LogoPath, (zero.X + HandgunManufacturerLogoOffsetX), (zero.Y + HandgunManufacturerLogoOffsetY), HandgunManufacturerLogoWidth, HandgunManufacturerLogoHeight, false, opt, 0, "")
+
+		pdf.SetXY((zero.X + HandgunDollarSignOffsetX), (zero.Y + HandgunDollarSignOffsetY)) // Location of $ sign
+		pdf.SetFont(SPBTagFont, "", HandgunDollarFontSize)
+		pdf.Cell(18, 28, "$")
+
+		pdf.SetXY((zero.X + HandgunPriceOffsetX), (zero.Y + HandgunPriceOffsetY))
+		// fontSizeOffset is used to scale down the HandgunPriceFontSize based on number of digits in the price
+		var fontSizeOffset float64
+		if len(t.Price) <= 3 {
+			fontSizeOffset = 0
+		} else if len(t.Price) == 4 {
+			fontSizeOffset = 12
+		} else if len(t.Price) == 5 {
+			fontSizeOffset = 24
+		} else if len(t.Price) == 6 {
+			fontSizeOffset = 30
+		} else if len(t.Price) >= 7 {
+			fontSizeOffset = 28
+		}
+		pdf.SetFont(SPBTagFont, "", (HandgunPriceFontSize - fontSizeOffset))
+		// NOTE: Remember to move the cell sizes to constants
+		pdf.CellFormat(110, 45, t.Price, "", 0, "R", false, 0, "")
+		pdf.SetFont(SPBTagFont, "", HandgunCentsFontSize)
+		// Subtracting a few points from the font size superscripts the 99 cent slightly
+		pdf.Write((HandgunCentsFontSize - 16), "99")
+
+		pdf.SetXY((zero.X + HandgunModelOffsetX), (zero.Y + HandgunModelOffsetY))
+		// Scale down the HandgunModelFontSize based on number of characters in the model name
+		// This hand tuned offset will gracefully handle around ~44 characters before it starts overflowing, but may collide with the caliber cell if the caliber is lengthy
+		if len(t.Model) <= 12 {
+			fontSizeOffset = 0
+		} else if len(t.Model) > 12 && len(t.Model) < 18 {
+			fontSizeOffset = 2
+		} else if len(t.Model) > 18 {
+			fontSizeOffset = 5
+		}
+		pdf.SetFont(SPBTagFont, "", (HandgunModelFontSize - fontSizeOffset))
+		pdf.CellFormat(60, 8, t.Model, "", 0, "L", false, 0, "")
+
+		pdf.SetXY((zero.X + HandgunCaliberOffsetX), (zero.Y + HandgunCaliberOffsetY))
+		// Scale down the HandgunCaliberFontSize based on number of characters in the caliber designation
+		pdf.SetFont(SPBTagFont, "", HandgunCaliberFontSize)
+		pdf.CellFormat(40, 8, t.Caliber, "", 0, "R", false, 0, "")
+
+		// draw the red separator bar
+		pdf.MoveTo((zero.X + HandgunSeparatorBarOffsetX), (zero.Y + HandgunSeparatorBarOffsetY))
+		pdf.LineTo((zero.X + HandgunSeparatorBarLength), (zero.Y + HandgunSeparatorBarOffsetY))
+		pdf.ClosePath()
+		pdf.SetLineWidth(SeparatorBarLineWidth)
+		pdf.SetDrawColor(SeparatorBarColorR, SeparatorBarColorB, SeparatorBarColorG)
+		pdf.DrawPath("D")
 	}
 
 }
