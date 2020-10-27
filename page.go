@@ -16,6 +16,13 @@ type Coord struct {
 	Y float64
 }
 
+// func (pg Page) DrawPage (list []Tag, pdf *gofpdf.Fpdf)
+
+// BUILD ALL PAGES FUNCTION
+// This will work by sorting through the tag list and determining how many pages are needed.
+// For example, filter the list for all Big tags and divide by 3, generate that number of pages, and draw those tags to those pages.
+// Then filter for the Small tags and divide by 10, generate that number of pages, and draw those tags to those pages.
+
 // GetLongGunPageCoord returns an array of coordinates helpful when placing long gun tags on long gun pages
 func GetLongGunPageCoord() [3]Coord {
 	var c [3]Coord

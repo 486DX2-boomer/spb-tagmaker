@@ -46,33 +46,46 @@ func main() {
 	l = append(l, NewTag("Magnum Research", "Desert Eagle", "50 Action Express", true, "1999", Small))
 	l = append(l, NewTag("FN", "509C", "9x19mm", true, "899", Small))
 
-	pdf.AddPage()
+	l = append(l, NewTag("FN", "Five SeveN", "5.7x28mm", true, "999", Small))
+	l = append(l, NewTag("Ruger", "10/22", "22 LR", true, "329", Big))
 
-	longGunPageCoord := GetLongGunPageCoord()
-	handGunPageCoord := GetHandgunPageCoord()
-
-	var j int
-	j = 0
-
-	for i := 0; i < 6; i++ {
-		l[i].Draw(longGunPageCoord[j], pdf)
-		j++
-		if j == 3 {
-			j = 0
-			pdf.AddPage()
-		}
-	}
-
-	for i := 6; i < 16; i++ {
-		l[i].Draw(handGunPageCoord[j], pdf)
-		j++
-		if j == 10 {
-			j = 0
-			pdf.AddPage()
-		}
-	}
+	BuildDocument(l, pdf)
 
 	err := pdf.OutputFileAndClose("hello.pdf")
 	fmt.Println(err)
 	fmt.Println("PDF generated")
+}
+
+// BuildDocument accepts a list of tags and builds a full document, sorting the handgun and long gun tags and then drawing each tag to an appropriate page.
+// BuildDocument must be supplied with a pointer to a gofpdf object which should be created on program initialization
+func BuildDocument(inputList []Tag, pdf *gofpdf.Fpdf) {
+
+	longGunPageCoord := GetLongGunPageCoord()
+	handGunPageCoord := GetHandgunPageCoord()
+
+	var handgunTags List
+	var longGunTags List
+
+	for i := 0; i < len(inputList); i++ {
+		if inputList[i].TagSize == Big {
+			longGunTags = append(longGunTags, inputList[i])
+		} else if inputList[i].TagSize == Small {
+			handgunTags = append(handgunTags, inputList[i])
+		}
+	}
+
+	for i := 0; i < len(longGunTags); i++ {
+		if i%3 == 0 {
+			pdf.AddPage()
+		}
+		longGunTags[i].Draw(longGunPageCoord[(i%3)], pdf)
+	}
+
+	for i := 0; i < len(handgunTags); i++ {
+		if i%10 == 0 {
+			pdf.AddPage()
+		}
+		handgunTags[i].Draw(handGunPageCoord[(i%10)], pdf)
+	}
+
 }
