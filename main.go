@@ -27,31 +27,27 @@ func main() {
 
 	var l List
 
-	l = append(l, NewTag("Daniel Defense", "DDM4V7", "5.56mm", true, "1699", Big))
-	l = append(l, NewTag("PTR Industries", "PTR91", "308 Winchester", true, "1029", Big))
-	l = append(l, NewTag("Wilson Combat", "Protector", "5.56mm", true, "1999", Big))
+	l = append(l, NewTag("Walther", "PPK", "380 Auto", true, "779", Small))
+	l = append(l, NewTag("Colt", "M4 Carbine", "5.56", true, "1099", Big))
+	l = append(l, NewTag("Springfield", "Saint", "5.56mm", true, "879", Big))
 
-	l = append(l, NewTag("Daniel Defense", "DDM4V11", "5.56mm", true, "1729", Big))
-	l = append(l, NewTag("PTR Industries", "PTR A3S K", "308 Winchester", true, "1029", Big))
-	l = append(l, NewTag("Wilson Combat", "Border Patrol", "12 GA", true, "1135", Big))
+	l = append(l, NewTag("Glock", "G44", "22 LR", true, "389", Small))
+	l = append(l, NewTag("Smith & Wesson", "617", "22 LR", true, "709", Small))
+	l = append(l, NewTag("Kel Tec", "PMR 30", "22 WMR", true, "399", Small))
 
-	l = append(l, NewTag("Glock", "G19C Gen 3", "9x19mm", true, "549", Small))
-	l = append(l, NewTag("Canik", "TP9", "9x19mm", true, "349", Small))
-	l = append(l, NewTag("Bersa", "Thunder 380", "380 ACP", true, "329", Small))
-	l = append(l, NewTag("CZ", "P-10C", "9x19mm", true, "529", Small))
-	l = append(l, NewTag("Chiappa", "Rhino 60DS", "357 Magnum", true, "1299", Small))
-	l = append(l, NewTag("Smith & Wesson", "M&P 9 Shield EZ PC", "9x19mm", true, "559", Small))
-	l = append(l, NewTag("Springfield", "Loaded Operator", "45 ACP", true, "1299", Small))
-	l = append(l, NewTag("Walther", "PPQ", "9x19mm", true, "619", Small))
-	l = append(l, NewTag("Magnum Research", "Desert Eagle", "50 Action Express", true, "1999", Small))
-	l = append(l, NewTag("FN", "509C", "9x19mm", true, "899", Small))
-
-	l = append(l, NewTag("FN", "Five SeveN", "5.7x28mm", true, "999", Small))
-	l = append(l, NewTag("Ruger", "10/22", "22 LR", true, "329", Big))
+	l = append(l, NewTag("Ruger", "Wrangler", "22 LR", true, "199", Small))
+	l = append(l, NewTag("Taurus", "Judge Tracker", "45 LC/410", true, "469", Small))
+	l = append(l, NewTag("Charter Arms", "Lavender Lady", "38 Special", true, "414", Small))
+	l = append(l, NewTag("Rock Island", "GI Standard CS", "45 ACP", true, "419", Small))
+	l = append(l, NewTag("FN", "FNX-45 Tactical", "45 ACP", true, "1229", Small))
+	l = append(l, NewTag("CZ", "97B", "45 ACP", true, "719", Small))
+	l = append(l, NewTag("Smith & Wesson", "M&P 40 FDE", "40 S&W", true, "699", Small))
+	l = append(l, NewTag("GSG", "GSG-16 Carbine", "22 LR", true, "349", Big))
+	l = append(l, NewTag("HK", "HK 45c", "45 ACP", true, "779", Small))
 
 	BuildDocument(l, pdf)
 
-	err := pdf.OutputFileAndClose("hello.pdf")
+	err := pdf.OutputFileAndClose("output.pdf")
 	fmt.Println(err)
 	fmt.Println("PDF generated")
 }
