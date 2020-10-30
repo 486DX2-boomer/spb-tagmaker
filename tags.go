@@ -1,6 +1,8 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/jung-kurt/gofpdf"
 )
 
@@ -33,6 +35,12 @@ func NewTag(manufacturer string, model string, caliber string, new bool, price s
 
 // Draw the tag to the position coordinate provided
 func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
+
+	// Strip the .99 cents from the price field if present (only dollar amount is needed)
+	if strings.Contains(t.Price, ".") {
+		t.Price = strings.Split(t.Price, ".")[0]
+	}
+
 	if t.TagSize == Big && t.New == true {
 		// draw a long gun tag
 

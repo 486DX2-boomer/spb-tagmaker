@@ -2,9 +2,15 @@ package main
 
 import (
 	"fmt"
+	"log"
+	"net/http"
 
 	"github.com/jung-kurt/gofpdf"
 )
+
+// GLOBALS
+// l contains all price tag objects in memory
+var l List
 
 func main() {
 
@@ -18,31 +24,31 @@ func main() {
 	// If manufacturer logo isn't found in the /logos folder, query Google Images for a logo. Save the logo on the server for later
 	// The web server runs indefinitely, waiting for new tags or for the user to delete all tags in memory and start over.
 
-	// Creating a pdf
-
-	// pdf.AddPage()
-
-	var l List
-
-	l = append(l, NewTag("Walther", "PPK", "380 Auto", false, "779", Small))
-	l = append(l, NewTag("Colt", "M4 Carbine", "5.56mm", false, "1099", Big))
+	l = append(l, NewTag("Walther", "PPK", "380 Auto", false, "779.99", Small))
+	l = append(l, NewTag("Colt", "M4 Carbine", "5.56mm", false, "1099.99", Big))
 	l = append(l, NewTag("Springfield", "Saint", "5.56mm", true, "879", Big))
 
 	l = append(l, NewTag("Glock", "G44", "22 LR", false, "389", Small))
-	l = append(l, NewTag("Smith & Wesson", "617", "22 LR", true, "709", Small))
+	l = append(l, NewTag("Smith & Wesson", "617", "22 LR", true, "709.99", Small))
 	l = append(l, NewTag("Kel Tec", "PMR 30", "22 WMR", true, "399", Small))
 
-	l = append(l, NewTag("Ruger", "Wrangler", "22 LR", true, "199", Small))
+	l = append(l, NewTag("Ruger", "Wrangler", "22 LR", true, "199.99", Small))
 	l = append(l, NewTag("Taurus", "Judge Tracker", "45 LC/410", true, "469", Small))
 	l = append(l, NewTag("Charter Arms", "Lavender Lady", "38 Special", true, "414", Small))
 	l = append(l, NewTag("Rock Island", "GI Standard CS", "45 ACP", true, "419", Small))
-	l = append(l, NewTag("FN", "FNX-45 Tactical", "45 ACP", true, "1229", Small))
-	l = append(l, NewTag("CZ", "97B", "45 ACP", true, "719", Small))
+	l = append(l, NewTag("FN", "FNX-45 Tactical", "45 ACP", true, "1229.99", Small))
+	l = append(l, NewTag("CZ", "97B", "45 ACP", true, "719.99", Small))
 	l = append(l, NewTag("Smith & Wesson", "M&P 40 FDE", "40 S&W", true, "699", Small))
-	l = append(l, NewTag("GSG", "GSG-16 Carbine", "22 LR", false, "349", Big))
-	l = append(l, NewTag("HK", "HK 45c", "45 ACP", true, "779", Small))
+	l = append(l, NewTag("GSG", "GSG-16 Carbine", "22 LR", false, "349.99", Big))
+	l = append(l, NewTag("HK", "HK 45c", "45 ACP", true, "779.99", Small))
 
 	BuildDocument(l, NewDocument())
+
+	http.HandleFunc("/", listTags)                    // setting router rule
+	err := http.ListenAndServe("localhost:8080", nil) // setting listening port
+	if err != nil {
+		log.Fatal("ListenAndServe: ", err)
+	}
 
 }
 
@@ -92,4 +98,79 @@ func NewDocument() *gofpdf.Fpdf {
 	pdf.SetTextColor(0, 0, 0)
 
 	return pdf
+}
+
+func listTags(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Fprintf(w, "<h1>SPB Tag Maker</h1>")
+
+	// UI Controls
+	fmt.Fprintf(w, "<b>(Add Tag)</b>        ")
+	fmt.Fprintf(w, "<b>(Delete All Tags)</b>        ")
+	fmt.Fprintf(w, "<b>(Upload Manufacturer Logo)</b>        ")
+	fmt.Fprintf(w, "<b>(Generate PDF)</b>        ")
+
+	fmt.Fprintf(w, "<p>")
+
+	// List all tags in memory
+	for i := range l {
+
+		fmt.Fprintf(w, l[i].Manufacturer)
+		fmt.Fprintf(w, "  |  ")
+
+		fmt.Fprintf(w, l[i].Model)
+		fmt.Fprintf(w, "  |  ")
+
+		fmt.Fprintf(w, l[i].Price)
+		fmt.Fprintf(w, "  |  ")
+
+		fmt.Fprintf(w, l[i].Caliber)
+		fmt.Fprintf(w, "  |  ")
+
+		if l[i].New == true {
+			fmt.Fprintf(w, "New")
+			fmt.Fprintf(w, "  |  ")
+
+		} else {
+			fmt.Fprintf(w, "Used")
+			fmt.Fprintf(w, "  |  ")
+
+		}
+		if l[i].TagSize == Big {
+			fmt.Fprintf(w, "Big Tag")
+
+		} else {
+			fmt.Fprintf(w, "Small Tag")
+
+		}
+		fmt.Fprintf(w, "<b>        (edit)</b>")
+		fmt.Fprintf(w, "<b>         (delete)</b>")
+		fmt.Fprintf(w, "<br>")
+		fmt.Fprintf(w, "</p>")
+	}
+
+}
+
+func addTag(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func editTag(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func deleteTag(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func deleteAllTags(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func uploadManufacturerLogo(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func generatePDF(w http.ResponseWriter, r *http.Request) {
+
 }
