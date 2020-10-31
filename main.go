@@ -44,10 +44,10 @@ func main() {
 
 	BuildDocument(l, NewDocument())
 
-	http.HandleFunc("/", listTags)                    // setting router rule
-	err := http.ListenAndServe("localhost:8080", nil) // setting listening port
+	http.HandleFunc("/", listTags)              // setting router rule
+	err := http.ListenAndServe(ListenPort, nil) // setting listening port
 	if err != nil {
-		log.Fatal("ListenAndServe: ", err)
+		log.Fatal(err)
 	}
 
 }

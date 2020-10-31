@@ -1,5 +1,8 @@
 package main
 
+// ListenPort defines the listen port of the http server
+const ListenPort string = ":8080"
+
 // Tag size. Big = 3x5". Small = 2x3"
 const (
 	Big   = false
