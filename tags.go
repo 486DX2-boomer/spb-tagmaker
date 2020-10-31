@@ -40,6 +40,10 @@ func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
 	if strings.Contains(t.Price, ".") {
 		t.Price = strings.Split(t.Price, ".")[0]
 	}
+	// Strip the $ sign from the price field if present
+	if strings.Contains(t.Price, "$") {
+		t.Price = strings.Split(t.Price, "$")[1]
+	}
 
 	if t.TagSize == Big && t.New == true {
 		// draw a long gun tag
