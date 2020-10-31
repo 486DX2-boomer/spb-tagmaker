@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 
@@ -44,7 +45,10 @@ func main() {
 
 	BuildDocument(l, NewDocument())
 
-	http.HandleFunc("/", listTags)              // setting router rule
+	http.HandleFunc("/", listTags) // setting router rule
+	http.HandleFunc("/addtag", addTag)
+	http.HandleFunc("/deletealltags", deleteAllTags)
+
 	err := http.ListenAndServe(ListenPort, nil) // setting listening port
 	if err != nil {
 		log.Fatal(err)
@@ -105,12 +109,16 @@ func listTags(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "<h1>SPB Tag Maker</h1>")
 
 	// UI Controls
-	fmt.Fprintf(w, "<b>(Add Tag)</b>        ")
-	fmt.Fprintf(w, "<b>(Delete All Tags)</b>        ")
+	fmt.Fprintf(w, "<b><a href=/addtag>(Add Tag)</b></a>        ")
+	fmt.Fprintf(w, "<b><a href=/deletealltags> (Delete All Tags)</a></b>        ")
 	fmt.Fprintf(w, "<b>(Upload Manufacturer Logo)</b>        ")
 	fmt.Fprintf(w, "<b>(Generate PDF)</b>        ")
 
 	fmt.Fprintf(w, "<p>")
+
+	if len(l) == 0 {
+		fmt.Fprintf(w, "<i>There are no tags in memory yet. Add one with the Add Tag button.</i>")
+	}
 
 	// List all tags in memory
 	for i := range l {
@@ -152,6 +160,14 @@ func listTags(w http.ResponseWriter, r *http.Request) {
 }
 
 func addTag(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Addtag triggered")
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	t, err := template.ParseFiles(".\\html\\add_tag.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	t.Execute(w, t)
+	// Set up an html handler here to listen for a post response and then get that data and add it to list
 
 }
 
@@ -164,6 +180,10 @@ func deleteTag(w http.ResponseWriter, r *http.Request) {
 }
 
 func deleteAllTags(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Deleting all tags")
+	l = nil
+	// Redirect back to the main menu
+	http.Redirect(w, r, "/", 303)
 
 }
 
