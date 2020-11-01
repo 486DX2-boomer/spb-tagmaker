@@ -194,7 +194,7 @@ func addTag(w http.ResponseWriter, r *http.Request) {
 func addTagForm(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("Addtag triggered")
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	t, err := template.ParseFiles(".\\html\\add_tag.html")
+	t, err := template.ParseFiles("./html/add_tag.html")
 	if err != nil {
 		log.Fatal(err)
 	}
