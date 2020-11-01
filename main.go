@@ -243,6 +243,6 @@ func uploadManufacturerLogo(w http.ResponseWriter, r *http.Request) {
 
 func generatePDF(w http.ResponseWriter, r *http.Request) {
 	BuildDocument(l, NewDocument())
-	http.ServeFile(w, r, ".\\output.pdf")
+	http.ServeFile(w, r, "output.pdf")
 
 }
