@@ -18,7 +18,7 @@ Feature list:
 
 ## How It Works
 
-The tag maker is a web app intended to run on the store's local server (although it can alternately run on just the main desk machine, or on internet). In the latter case, only one store can use it at a time, otherwise we'd end up overwriting each other's tags.
+The tag maker is a web app intended to run on the store's local server (although it can alternately run on just the main desk machine, or on the internet). In the latter case, only one store can use it at a time, otherwise we'd end up overwriting each other's tags.
 
 On opening the web app, there is a list of all tags currently stored in memory. It will look something like this: 
 
