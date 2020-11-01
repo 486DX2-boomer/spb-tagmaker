@@ -12,7 +12,7 @@ func GetLogoImagePath(fileName string) string {
 	extension := []string{".png", ".jpg", ".jpeg", ".gif"}
 
 	var logoPath string
-	l := ".\\logos\\" + strings.ToLower(fileName)
+	l := "/logos/" + strings.ToLower(fileName)
 	fileFound := false
 
 	// Find the file
@@ -33,7 +33,7 @@ func GetLogoImagePath(fileName string) string {
 	// If it's a vector, it will need to be rasterized
 	if fileFound == false {
 		fmt.Println(fileName + " not found, defaulting to blank")
-		logoPath = ".\\logos\\blank.png"
+		logoPath = "./logos/blank.png"
 		return logoPath
 	}
 
