@@ -12,7 +12,7 @@ func GetLogoImagePath(fileName string) string {
 	extension := []string{".png", ".jpg", ".jpeg", ".gif"}
 
 	var logoPath string
-	l := "/logos/" + strings.ToLower(fileName)
+	l := "./logos/" + strings.ToLower(fileName)
 	fileFound := false
 
 	// Find the file

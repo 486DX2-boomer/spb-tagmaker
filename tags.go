@@ -52,7 +52,7 @@ func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
 		var opt gofpdf.ImageOptions
 
 		// Add the SPB logo
-		pdf.ImageOptions("/logos/shootpointblank.png", (zero.X + LongGunSPBLogoOffsetX), (zero.Y + LongGunSPBLogoOffsetY), LongGunSPBLogoWidth, 0, false, opt, 0, "")
+		pdf.ImageOptions("./logos/shootpointblank.png", (zero.X + LongGunSPBLogoOffsetX), (zero.Y + LongGunSPBLogoOffsetY), LongGunSPBLogoWidth, 0, false, opt, 0, "")
 
 		// get logo path
 		LogoPath := (GetLogoImagePath(t.Manufacturer))
@@ -118,7 +118,7 @@ func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
 		var opt gofpdf.ImageOptions
 
 		// Add the SPB logo
-		pdf.ImageOptions("/logos/shootpointblank.png", (zero.X + HandgunSPBLogoOffsetX), (zero.Y + HandgunSPBLogoOffsetY), HandgunSPBLogoWidth, 0, false, opt, 0, "")
+		pdf.ImageOptions("./logos/shootpointblank.png", (zero.X + HandgunSPBLogoOffsetX), (zero.Y + HandgunSPBLogoOffsetY), HandgunSPBLogoWidth, 0, false, opt, 0, "")
 
 		// get logo path
 		LogoPath := (GetLogoImagePath(t.Manufacturer))
