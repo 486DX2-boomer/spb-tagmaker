@@ -19,7 +19,7 @@ func main() {
 
 	fmt.Println("-- SPB Tagmaker --")
 
-	// -----------------TESTING STUFF
+	// -----------------TEST TAGS
 	l = append(l, NewTag("Walther", "PPK", "380 Auto", false, "779.99", Small))
 	l = append(l, NewTag("Colt", "M4 Carbine", "5.56mm", false, "1099.99", Big))
 	l = append(l, NewTag("Springfield", "Saint", "5.56mm", true, "879", Big))
@@ -39,7 +39,7 @@ func main() {
 	l = append(l, NewTag("HK", "HK 45c", "45 ACP", true, "779.99", Small))
 
 	// BuildDocument(l, NewDocument())
-	// -----------------TESTING STUFF
+	// -----------------TEST TAGS
 
 	http.HandleFunc("/", listTags) // setting router rule
 	http.HandleFunc("/addtagform", addTagForm)
@@ -151,10 +151,14 @@ func listTags(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "Small Tag")
 
 		}
+
 		// fmt.Fprintf(w, "<b>(edit)</b>")
 
 		fmt.Fprintf(w, ((" <b><a href=/deletetag/") + strconv.Itoa(i) + (">(delete)</a></b>")))
 		// fmt.Fprintf(w, (" <b><a href=/deletetag id=" + "tag" + strconv.Itoa(i) + ">" + "(delete)</a></b>"))
+
+		// If manufacturer logo not detected
+		// print ("Warning: Logo not detected, upload with Upload Logo button")
 
 		fmt.Fprintf(w, "<br>")
 		fmt.Fprintf(w, "</p>")
@@ -238,6 +242,10 @@ func deleteAllTags(w http.ResponseWriter, r *http.Request) {
 }
 
 func uploadManufacturerLogo(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func scrapeManufacturerLogo(w http.ResponseWriter, r *http.Request) {
 
 }
 
