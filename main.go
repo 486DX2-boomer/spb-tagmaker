@@ -5,6 +5,8 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/jung-kurt/gofpdf"
 )
@@ -15,34 +17,26 @@ var l List
 
 func main() {
 
-	// Step 1 : Set up a web server
-	// Step 2 : Display all tags in memory
-	// Step 3 : User clicks "add tag"
-	// Step 4 : Collect information from form, add the tag to memory
-	// Repeat from step 2 until PRINT TAG is clicked by user
-	// Step 5 : Get all tags in memory, sort by handgun, long gun, new and used
-	// Step 6 : Generate a pdf with all handgun and long gun tags (handgun and long gun tags are always separate pages)
-	// If manufacturer logo isn't found in the /logos folder, query Google Images for a logo. Save the logo on the server for later
-	// The web server runs indefinitely, waiting for new tags or for the user to delete all tags in memory and start over.
+	fmt.Println("-- SPB Tagmaker --")
 
 	// -----------------TESTING STUFF
-	// l = append(l, NewTag("Walther", "PPK", "380 Auto", false, "779.99", Small))
-	// l = append(l, NewTag("Colt", "M4 Carbine", "5.56mm", false, "1099.99", Big))
-	// l = append(l, NewTag("Springfield", "Saint", "5.56mm", true, "879", Big))
+	l = append(l, NewTag("Walther", "PPK", "380 Auto", false, "779.99", Small))
+	l = append(l, NewTag("Colt", "M4 Carbine", "5.56mm", false, "1099.99", Big))
+	l = append(l, NewTag("Springfield", "Saint", "5.56mm", true, "879", Big))
 
-	// l = append(l, NewTag("Glock", "G44", "22 LR", false, "389", Small))
-	// l = append(l, NewTag("Smith & Wesson", "617", "22 LR", true, "709.99", Small))
-	// l = append(l, NewTag("Kel Tec", "PMR 30", "22 WMR", true, "399", Small))
+	l = append(l, NewTag("Glock", "G44", "22 LR", false, "389", Small))
+	l = append(l, NewTag("Smith & Wesson", "617", "22 LR", true, "709.99", Small))
+	l = append(l, NewTag("Kel Tec", "PMR 30", "22 WMR", true, "399", Small))
 
-	// l = append(l, NewTag("Ruger", "Wrangler", "22 LR", true, "199.99", Small))
-	// l = append(l, NewTag("Taurus", "Judge Tracker", "45 LC/410", true, "469", Small))
-	// l = append(l, NewTag("Charter Arms", "Lavender Lady", "38 Special", true, "414", Small))
-	// l = append(l, NewTag("Rock Island", "GI Standard CS", "45 ACP", true, "419", Small))
-	// l = append(l, NewTag("FN", "FNX-45 Tactical", "45 ACP", true, "1229.99", Small))
-	// l = append(l, NewTag("CZ", "97B", "45 ACP", true, "719.99", Small))
-	// l = append(l, NewTag("Smith & Wesson", "M&P 40 FDE", "40 S&W", true, "699", Small))
-	// l = append(l, NewTag("GSG", "GSG-16 Carbine", "22 LR", false, "349.99", Big))
-	// l = append(l, NewTag("HK", "HK 45c", "45 ACP", true, "779.99", Small))
+	l = append(l, NewTag("Ruger", "Wrangler", "22 LR", true, "199.99", Small))
+	l = append(l, NewTag("Taurus", "Judge Tracker", "45 LC/410", true, "469", Small))
+	l = append(l, NewTag("Charter Arms", "Lavender Lady", "38 Special", true, "414", Small))
+	l = append(l, NewTag("Rock Island", "GI Standard CS", "45 ACP", true, "419", Small))
+	l = append(l, NewTag("FN", "FNX-45 Tactical", "45 ACP", true, "1229.99", Small))
+	l = append(l, NewTag("CZ", "97B", "45 ACP", true, "719.99", Small))
+	l = append(l, NewTag("Smith & Wesson", "M&P 40 FDE", "40 S&W", true, "699", Small))
+	l = append(l, NewTag("GSG", "GSG-16 Carbine", "22 LR", false, "349.99", Big))
+	l = append(l, NewTag("HK", "HK 45c", "45 ACP", true, "779.99", Small))
 
 	// BuildDocument(l, NewDocument())
 	// -----------------TESTING STUFF
@@ -52,6 +46,7 @@ func main() {
 	http.HandleFunc("/addtag", addTag)
 	http.HandleFunc("/deletealltags", deleteAllTags)
 	http.HandleFunc("/generatepdf", generatePDF)
+	http.HandleFunc("/deletetag/", deleteTag)
 
 	err := http.ListenAndServe(ListenPort, nil) // setting listening port
 	if err != nil {
@@ -156,8 +151,11 @@ func listTags(w http.ResponseWriter, r *http.Request) {
 			fmt.Fprintf(w, "Small Tag")
 
 		}
-		fmt.Fprintf(w, "<b>        (edit)</b>")
-		fmt.Fprintf(w, "<b>         (delete)</b>")
+		// fmt.Fprintf(w, "<b>(edit)</b>")
+
+		fmt.Fprintf(w, ((" <b><a href=/deletetag/") + strconv.Itoa(i) + (">(delete)</a></b>")))
+		// fmt.Fprintf(w, (" <b><a href=/deletetag id=" + "tag" + strconv.Itoa(i) + ">" + "(delete)</a></b>"))
+
 		fmt.Fprintf(w, "<br>")
 		fmt.Fprintf(w, "</p>")
 	}
@@ -165,8 +163,7 @@ func listTags(w http.ResponseWriter, r *http.Request) {
 }
 
 func addTag(w http.ResponseWriter, r *http.Request) {
-	// get form data and add it to list
-	// map[caliber:[5.56x45] manufacturer:[Colt] model:[M4 Carbine] new:[New Gun] price:[1199.99] tagsize:[Big Tag]]
+
 	r.ParseForm()
 	fmt.Println(r.Form)
 
@@ -205,12 +202,31 @@ func addTagForm(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func editTag(w http.ResponseWriter, r *http.Request) {
+// func editTag(w http.ResponseWriter, r *http.Request) {
 
+// }
+
+// removeTagFromList deletes an index from the price tag list, maintaining the order of the tags. It is called in deleteTag and supplised with an index from the appropriate URL from the listTags main menu
+func removeTagFromList(list []Tag, index int) []Tag {
+	ret := make([]Tag, 0)
+	ret = append(ret, list[:index]...)
+	return append(ret, list[index+1:]...)
 }
 
 func deleteTag(w http.ResponseWriter, r *http.Request) {
+	fmt.Print("Deleting tag")
 
+	// Get the index of the tag to be removed from list
+	s := fmt.Sprint(r.URL)                            // Write the r.URL to a string
+	deleteIndex := strings.Split(s, "/deletetag/")[1] // Split it to get the index
+	i, _ := strconv.Atoi(deleteIndex)                 // convert to integer to supply to RemoveTagFromList()
+
+	fmt.Print(" ", i, "\n")
+
+	l = removeTagFromList(l, i)
+
+	// Redirect back to the main menu
+	http.Redirect(w, r, "/", 303)
 }
 
 func deleteAllTags(w http.ResponseWriter, r *http.Request) {
