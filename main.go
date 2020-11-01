@@ -51,6 +51,7 @@ func main() {
 	http.HandleFunc("/addtagform", addTagForm)
 	http.HandleFunc("/addtag", addTag)
 	http.HandleFunc("/deletealltags", deleteAllTags)
+	http.HandleFunc("/generatepdf", generatePDF)
 
 	err := http.ListenAndServe(ListenPort, nil) // setting listening port
 	if err != nil {
@@ -107,6 +108,7 @@ func NewDocument() *gofpdf.Fpdf {
 	return pdf
 }
 
+// listTags is the main menu of the UI
 func listTags(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprintf(w, "<h1>SPB Tag Maker</h1>")
@@ -115,7 +117,7 @@ func listTags(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "<b><a href=/addtagform>(Add Tag)</b></a>        ")
 	fmt.Fprintf(w, "<b><a href=/deletealltags> (Delete All Tags)</a></b>        ")
 	fmt.Fprintf(w, "<b>(Upload Manufacturer Logo)</b>        ")
-	fmt.Fprintf(w, "<b>(Generate PDF)</b>        ")
+	fmt.Fprintf(w, "<b><a href=/generatepdf>(Generate PDF)</a></b>        ")
 
 	fmt.Fprintf(w, "<p>")
 
@@ -224,5 +226,7 @@ func uploadManufacturerLogo(w http.ResponseWriter, r *http.Request) {
 }
 
 func generatePDF(w http.ResponseWriter, r *http.Request) {
+	BuildDocument(l, NewDocument())
+	http.ServeFile(w, r, ".\\output.pdf")
 
 }
