@@ -48,6 +48,8 @@ func main() {
 	http.HandleFunc("/deletealltags", deleteAllTags)
 	http.HandleFunc("/generatepdf", generatePDF)
 	http.HandleFunc("/deletetag/", deleteTag)
+	http.HandleFunc("/edittag/", editTag)
+	http.HandleFunc("/edittagsave/", editTagSave)
 
 	err := http.ListenAndServe(ListenPort, nil) // setting listening port
 	if err != nil {
@@ -153,7 +155,7 @@ func listTags(w http.ResponseWriter, r *http.Request) {
 
 		}
 
-		// fmt.Fprintf(w, "<b>(edit)</b>")
+		fmt.Fprintf(w, ((" <b><a href=/edittag/") + strconv.Itoa(i) + (">(edit)</a></b>")))
 
 		fmt.Fprintf(w, ((" <b><a href=/deletetag/") + strconv.Itoa(i) + (">(delete)</a></b>")))
 		// fmt.Fprintf(w, (" <b><a href=/deletetag id=" + "tag" + strconv.Itoa(i) + ">" + "(delete)</a></b>"))
@@ -207,9 +209,96 @@ func addTagForm(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// func editTag(w http.ResponseWriter, r *http.Request) {
+func editTag(w http.ResponseWriter, r *http.Request) {
+	fmt.Print("Editing tag")
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
-// }
+	// Get the index of the tag to be edited
+	s := fmt.Sprint(r.URL)                        // Write the r.URL to a string
+	editIndex := strings.Split(s, "/edittag/")[1] // Split it to get the index
+	i, _ := strconv.Atoi(editIndex)               // convert to integer to access tag data
+
+	var data struct {
+		Manufacturer string
+		Model        string
+		Caliber      string
+		Price        string
+		New          string
+		Used         string
+		Big          string
+		Small        string
+		EditIndex    string
+	}
+	// grab the data from the Tag and convert it to a series of strings the templater can use
+	data.Manufacturer = l[i].Manufacturer
+	data.Model = l[i].Model
+	data.Caliber = l[i].Caliber
+	data.Price = l[i].Price
+
+	// There are two radio button fields on the edit form, New or Used Gun and Big or Small Tag. One of each should be set to "checked" based on the tag data
+	if l[i].New == true {
+		data.New = "checked"
+		data.Used = " "
+	} else {
+		data.New = " "
+		data.Used = "checked"
+	}
+
+	if l[i].TagSize == Big {
+		data.Big = "checked"
+		data.Small = " "
+	} else {
+		data.Big = " "
+		data.Small = "checked"
+	}
+
+	// The index of the edited tag is stored here and put in the template, so it can be posted to editTagSave() when the edit tag form is filled out
+	data.EditIndex = editIndex
+
+	fmt.Print(" ", i, "\n") // print to the console which tag is being edited
+	fmt.Println(data)
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
+	t, err := template.ParseFiles("./html/edit_tag.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	t.Execute(w, data)
+
+}
+
+func editTagSave(w http.ResponseWriter, r *http.Request) {
+
+	s := fmt.Sprint(r.URL)                            // Write the r.URL to a string
+	editIndex := strings.Split(s, "/edittagsave/")[1] // Split it to get the index
+	i, _ := strconv.Atoi(editIndex)                   // convert to integer to access tag data
+
+	// The rest of the logic is the same as adding a tag, but overwriting it in place instead of appending it
+	r.ParseForm()
+	fmt.Println(r.Form)
+
+	l[i].Manufacturer = r.Form["manufacturer"][0]
+	l[i].Model = r.Form["model"][0]
+	l[i].Caliber = r.Form["caliber"][0]
+	l[i].Price = r.Form["price"][0]
+
+	if r.Form["new"][0] == "New Gun" {
+		l[i].New = true
+	} else {
+		l[i].New = false
+	}
+
+	if r.Form["tagsize"][0] == "Big Tag" {
+		l[i].TagSize = Big
+	} else {
+		l[i].TagSize = Small
+	}
+
+	// Redirect back to the main menu
+	http.Redirect(w, r, "/", 303)
+
+}
 
 // removeTagFromList deletes an index from the price tag list, maintaining the order of the tags. It is called in deleteTag and supplised with an index from the appropriate URL from the listTags main menu
 func removeTagFromList(list []Tag, index int) []Tag {
@@ -226,7 +315,7 @@ func deleteTag(w http.ResponseWriter, r *http.Request) {
 	deleteIndex := strings.Split(s, "/deletetag/")[1] // Split it to get the index
 	i, _ := strconv.Atoi(deleteIndex)                 // convert to integer to supply to RemoveTagFromList()
 
-	fmt.Print(" ", i, "\n")
+	fmt.Print(" ", i, "\n") // print to the console which tag is being deleted
 
 	l = removeTagFromList(l, i)
 
