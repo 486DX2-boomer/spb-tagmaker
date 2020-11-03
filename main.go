@@ -3,8 +3,10 @@ package main
 import (
 	"fmt"
 	"html/template"
+	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"strings"
 
@@ -20,25 +22,26 @@ func main() {
 	fmt.Println("-- SPB Tagmaker --")
 
 	// -----------------TEST TAGS
-	l = append(l, NewTag("Walther", "PPK", "380 Auto", false, "779.99", Small))
-	l = append(l, NewTag("Colt", "M4 Carbine", "5.56mm", true, "1099.99", Big))
-	l = append(l, NewTag("Smith & Wesson", "M&P-15", "5.56mm", true, "809.99", Big))
-	l = append(l, NewTag("Springfield", "Saint", "5.56mm", true, "879", Big))
+	// l = append(l, NewTag("Walther", "PPK", "380 Auto", false, "779.99", Small))
+	// l = append(l, NewTag("Colt", "M4 Carbine", "5.56mm", true, "1099.99", Big))
+	// l = append(l, NewTag("Smith & Wesson", "M&P-15", "5.56mm", true, "809.99", Big))
+	// l = append(l, NewTag("Springfield", "Saint", "5.56mm", true, "879", Big))
 
-	l = append(l, NewTag("Glock", "G44", "22 LR", false, "389", Small))
-	l = append(l, NewTag("Smith & Wesson", "617", "22 LR", true, "709.99", Small))
-	l = append(l, NewTag("Kel Tec", "PMR 30", "22 WMR", true, "399", Small))
+	// l = append(l, NewTag("Glock", "G44", "22 LR", false, "389", Small))
+	// l = append(l, NewTag("Smith & Wesson", "617", "22 LR", true, "709.99", Small))
+	// l = append(l, NewTag("Kel Tec", "PMR 30", "22 WMR", true, "399", Small))
 
-	l = append(l, NewTag("Ruger", "Wrangler", "22 LR", true, "199.99", Small))
-	l = append(l, NewTag("Taurus", "Judge Tracker", "45 LC/410", true, "469", Small))
-	l = append(l, NewTag("Charter Arms", "Lavender Lady", "38 Special", true, "414", Small))
-	l = append(l, NewTag("Rock Island", "GI Standard CS", "45 ACP", true, "419", Small))
-	l = append(l, NewTag("FN", "FNX-45 Tactical", "45 ACP", true, "1229.99", Small))
-	l = append(l, NewTag("CZ", "97B", "45 ACP", true, "719.99", Small))
-	l = append(l, NewTag("Smith & Wesson", "M&P 40 FDE", "40 S&W", true, "699", Small))
-	l = append(l, NewTag("GSG", "GSG-16 Carbine", "22 LR", false, "349.99", Big))
-	l = append(l, NewTag("HK", "HK 45c", "45 ACP", true, "779.99", Small))
-	l = append(l, NewTag("Patriot Ordnance Factory", "Rebel", "22 LR", true, "649.99", Big))
+	// l = append(l, NewTag("Ruger", "Wrangler", "22 LR", true, "199.99", Small))
+	// l = append(l, NewTag("Taurus", "Judge Tracker", "45 LC/410", true, "469", Small))
+	// l = append(l, NewTag("Charter Arms", "Lavender Lady", "38 Special", true, "414", Small))
+	// l = append(l, NewTag("Rock Island", "GI Standard CS", "45 ACP", true, "419", Small))
+	// l = append(l, NewTag("FN", "FNX-45 Tactical", "45 ACP", true, "1229.99", Small))
+	// l = append(l, NewTag("CZ", "97B", "45 ACP", true, "719.99", Small))
+	// l = append(l, NewTag("Smith & Wesson", "M&P 40 FDE", "40 S&W", true, "699", Small))
+	// l = append(l, NewTag("GSG", "GSG-16 Carbine", "22 LR", false, "349.99", Big))
+	// l = append(l, NewTag("HK", "HK 45c", "45 ACP", true, "779.99", Small))
+	// l = append(l, NewTag("Patriot Ordnance Factory", "Rebel", "22 LR", true, "649.99", Big))
+	// l = append(l, NewTag("Sig Sauer", "716I Tread Box", "7.62x51mm", true, "1699", Big))
 
 	// BuildDocument(l, NewDocument())
 	// -----------------TEST TAGS
@@ -51,6 +54,8 @@ func main() {
 	http.HandleFunc("/deletetag/", deleteTag)
 	http.HandleFunc("/edittag/", editTag)
 	http.HandleFunc("/edittagsave/", editTagSave)
+	http.HandleFunc("/uploadmanufacturerlogoform/", uploadManufacturerLogoForm)
+	http.HandleFunc("/uploadmanufacturerlogo/", uploadManufacturerLogo)
 
 	err := http.ListenAndServe(ListenPort, nil) // setting listening port
 	if err != nil {
@@ -115,7 +120,7 @@ func listTags(w http.ResponseWriter, r *http.Request) {
 	// UI Controls
 	fmt.Fprintf(w, "<b><a href=/addtagform>(Add Tag)</b></a>        ")
 	fmt.Fprintf(w, "<b><a href=/deletealltags> (Delete All Tags)</a></b>        ")
-	fmt.Fprintf(w, "<b>(Upload Manufacturer Logo)</b>        ")
+	fmt.Fprintf(w, "<b><a href=/uploadmanufacturerlogoform>(Upload Manufacturer Logo)<a></b>        ")
 	fmt.Fprintf(w, "<b><a href=/generatepdf>(Generate PDF)</a></b>        ")
 
 	fmt.Fprintf(w, "<p>")
@@ -335,10 +340,94 @@ func deleteAllTags(w http.ResponseWriter, r *http.Request) {
 
 func uploadManufacturerLogo(w http.ResponseWriter, r *http.Request) {
 
+	// 10 MB maximum upload size
+	r.ParseMultipartForm(10 << 20)
+
+	// get name of manufacturer
+	var logoFilename string
+	logoFilename = r.FormValue("Manufacturer Name")
+	logoFilename = strings.ToLower(logoFilename)
+
+	file, handler, err := r.FormFile("uploadedLogo")
+	if err != nil {
+		fmt.Println("Error retrieving logo upload: ")
+		fmt.Println("err")
+		return
+	}
+	defer file.Close()
+
+	fmt.Printf("Uploaded file: %+v \n", handler.Filename)
+	fmt.Printf("Filesize: %+v \n", handler.Size)
+	fmt.Printf("MIME Header: %+v \n", handler.Header)
+
+	if (handler.Header["Content-Type"][0] != "image/jpeg") && (handler.Header["Content-Type"][0] != "image/gif") && (handler.Header["Content-Type"][0] != "image/png") {
+		fmt.Println("Not an image file, aborting")
+		fmt.Fprintf(w, "<h1>Error: not an image file, aborting upload<h1>")
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		fmt.Fprintf(w, "<br><a href=/listtags/><button>Back</button></a>")
+		return
+	}
+
+	// Get the file extension to construct the full filename
+	extension := strings.Split(handler.Header["Content-Type"][0], "image/")[1]
+	logoFilename += "."
+	logoFilename += extension
+
+	fmt.Println(logoFilename)
+
+	// tempFile, err := ioutil.TempFile("logos", logoFilename)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// defer tempFile.Close()
+
+	fileBytes, err := ioutil.ReadAll(file)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	f, err := os.Create(logoFilename)
+	defer f.Close()
+
+	f.Write(fileBytes)
+	f.Close()
+	// Move the output file to the logos directory
+	err = os.Rename(logoFilename, ("./logos/" + logoFilename))
+
+	if err != nil {
+		fmt.Println(err)
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+		fmt.Fprintf(w, "An error occurred: %s", err)
+		fmt.Fprintf(w, "<br><a href=/listtags/><button>Back</button></a>")
+		return
+	}
+
+	fmt.Println("Successfully uploaded", logoFilename)
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	fmt.Fprintf(w, "File upload successful")
+	fmt.Fprintf(w, "<br><a href=/listtags/><button>Back</button></a>")
+
+	// clean up the temp file
+	// os.Remove(tempFile.Name())
+
+	// The redirect from this point does not work, I get "http: superfluous response.WriteHeader call from main.uploadManufacturerLogo (main.go:391)"
+	// http.Redirect(w, r, "/", 303)
+	// Instead I added a Back button
+
+}
+
+func uploadManufacturerLogoForm(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("Upload form triggered triggered")
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	t, err := template.ParseFiles("./html/upload_manufacturer_logo.html")
+	if err != nil {
+		log.Fatal(err)
+	}
+	t.Execute(w, t)
 }
 
 func scrapeManufacturerLogo(w http.ResponseWriter, r *http.Request) {
-
+	// Scrape a logo automatically from Google Images
 }
 
 func generatePDF(w http.ResponseWriter, r *http.Request) {
