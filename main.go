@@ -38,6 +38,7 @@ func main() {
 	l = append(l, NewTag("Smith & Wesson", "M&P 40 FDE", "40 S&W", true, "699", Small))
 	l = append(l, NewTag("GSG", "GSG-16 Carbine", "22 LR", false, "349.99", Big))
 	l = append(l, NewTag("HK", "HK 45c", "45 ACP", true, "779.99", Small))
+	l = append(l, NewTag("Patriot Ordnance Factory", "Rebel", "22 LR", true, "649.99", Big))
 
 	// BuildDocument(l, NewDocument())
 	// -----------------TEST TAGS
@@ -155,13 +156,14 @@ func listTags(w http.ResponseWriter, r *http.Request) {
 
 		}
 
+		if !LogoFound(l[i].Manufacturer) {
+			// If manufacturer logo not detected print warning
+			fmt.Fprintf(w, `<span style="color:red;"> | Logo not found</span>`)
+		}
+
 		fmt.Fprintf(w, ((" <b><a href=/edittag/") + strconv.Itoa(i) + (">(edit)</a></b>")))
 
 		fmt.Fprintf(w, ((" <b><a href=/deletetag/") + strconv.Itoa(i) + (">(delete)</a></b>")))
-		// fmt.Fprintf(w, (" <b><a href=/deletetag id=" + "tag" + strconv.Itoa(i) + ">" + "(delete)</a></b>"))
-
-		// If manufacturer logo not detected
-		// print ("Warning: Logo not detected, upload with Upload Logo button")
 
 		fmt.Fprintf(w, "<br>")
 		fmt.Fprintf(w, "</p>")

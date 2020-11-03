@@ -41,3 +41,25 @@ func GetLogoImagePath(fileName string) string {
 	return logoPath
 
 }
+
+// LogoFound returns true if the filename argument is present in the logos directory, false if not
+func LogoFound(fileName string) bool {
+	// List of possible extensions
+	extension := []string{".png", ".jpg", ".jpeg", ".gif"}
+
+	l := "./logos/" + strings.ToLower(fileName)
+	fileFound := false
+
+	for i := 0; i < len(extension); i++ {
+		_, err := os.Stat(l + extension[i])
+		if os.IsNotExist(err) {
+			fileFound = false
+		} else {
+			fileFound = true
+			return fileFound
+		}
+	}
+
+	return fileFound
+
+}
