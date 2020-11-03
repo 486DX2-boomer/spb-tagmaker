@@ -57,7 +57,7 @@ func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
 		// get logo path
 		LogoPath := (GetLogoImagePath(t.Manufacturer))
 
-		pdf.ImageOptions(LogoPath, (zero.X + LongGunManufacturerLogoOffsetX), (zero.Y + LongGunManufacturerLogoOffsetY), LongGunManufacturerLogoWidth, 0, false, opt, 0, "")
+		pdf.ImageOptions(LogoPath, (zero.X + LongGunManufacturerLogoOffsetX), (zero.Y + LongGunManufacturerLogoOffsetY), LongGunManufacturerLogoWidth, LongGunManufacturerLogoHeight, false, opt, 0, "")
 
 		pdf.SetXY((zero.X + LongGunDollarSignOffsetX), (zero.Y + LongGunDollarSignOffsetY)) // Location of $ sign
 		pdf.SetFont(SPBTagFont, "", LongGunDollarFontSize)
@@ -199,7 +199,7 @@ func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
 
 		// get manufacturer logo path
 		LogoPath := (GetLogoImagePath(t.Manufacturer))
-		pdf.ImageOptions(LogoPath, (zero.X + LongGunManufacturerLogoOffsetX), (zero.Y + LongGunManufacturerLogoOffsetY), LongGunManufacturerLogoWidth, 0, false, opt, 0, "")
+		pdf.ImageOptions(LogoPath, (zero.X + LongGunManufacturerLogoOffsetX), (zero.Y + LongGunManufacturerLogoOffsetY), LongGunManufacturerLogoWidth, LongGunManufacturerLogoHeight, false, opt, 0, "")
 
 		pdf.SetXY((zero.X + LongGunDollarSignOffsetX), (zero.Y + LongGunDollarSignOffsetY)) // Location of $ sign
 		pdf.SetFont(SPBTagFont, "", LongGunDollarFontSize)
