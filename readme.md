@@ -42,7 +42,7 @@ Manufacturer logos are stored server-side. If the logo for a tag cannot be found
 
 ## The Tags
 
-Handgun tags are 2x3. Long gun tags are 3x5. There are 10 handgun tags per 8.5x11 page and 3 long gun tags per 8.5x11 page. The font on the tags is Franklin Gothic Medium. The SPB logo is in the top left and the manufacturer logo is on the top right, with an orangish-red separator bar between the price and the model and caliber. The hex value of the color of the separator bar is #D4582A. The separator bar is 2 pt in thickness.
+Handgun tags are 2x3. Long gun tags are 3x5. There are 10 handgun tags per 8.5x11 page and 3 long gun tags per 8.5x11 page. The font on the tags is Franklin Gothic Medium. The SPB logo is in the top left and the manufacturer logo is on the top right, with an orangish-red separator bar between the price and the model and caliber.The separator bar color is RGB(212, 87, 42). The separator bar is 2.5 pt in thickness.
 
 Font sizes adjust dynamically based on the amount of characters in a field, so most common calibers, prices, and model names will fit on the tag. Only the longest entries will start to spill over (for example, *M&P Shield 380 EZ Performance Center* will be printed in a smaller font size than *1911A1*, and if the model name is long enough it can indeed spill over in to the caliber field.)
 

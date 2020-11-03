@@ -21,7 +21,7 @@ const SPBTagFont string = "Franklin Gothic Medium"
 const LongGunSPBLogoWidth float64 = 129
 
 // LongGunManufacturerLogoWidth defines the width of the manufacturer's logo in pts
-const LongGunManufacturerLogoWidth float64 = 104
+const LongGunManufacturerLogoWidth float64 = 96
 
 // Font sizes and font family
 const (
@@ -151,6 +151,6 @@ const (
 	LongGunSeparatorBarLength float64 = 338
 	HandgunSeparatorBarLength float64 = 200
 	SeparatorBarColorR        int     = 212
-	SeparatorBarColorG        int     = 88
+	SeparatorBarColorG        int     = 87
 	SeparatorBarColorB        int     = 42
 )

@@ -108,7 +108,7 @@ func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
 		pdf.LineTo((zero.X + LongGunSeparatorBarLength), (zero.Y + LongGunSeparatorBarOffsetY))
 		pdf.ClosePath()
 		pdf.SetLineWidth(SeparatorBarLineWidth)
-		pdf.SetDrawColor(SeparatorBarColorR, SeparatorBarColorB, SeparatorBarColorG)
+		pdf.SetDrawColor(SeparatorBarColorR, SeparatorBarColorG, SeparatorBarColorB)
 		pdf.DrawPath("D")
 
 	} else if t.TagSize == Small && t.New == true {
@@ -173,7 +173,7 @@ func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
 		pdf.LineTo((zero.X + HandgunSeparatorBarLength), (zero.Y + HandgunSeparatorBarOffsetY))
 		pdf.ClosePath()
 		pdf.SetLineWidth(SeparatorBarLineWidth)
-		pdf.SetDrawColor(SeparatorBarColorR, SeparatorBarColorB, SeparatorBarColorG)
+		pdf.SetDrawColor(SeparatorBarColorR, SeparatorBarColorG, SeparatorBarColorB)
 		pdf.DrawPath("D")
 	} else if t.TagSize == Big && t.New == false {
 		// draw a used long gun tag

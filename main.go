@@ -21,7 +21,8 @@ func main() {
 
 	// -----------------TEST TAGS
 	l = append(l, NewTag("Walther", "PPK", "380 Auto", false, "779.99", Small))
-	l = append(l, NewTag("Colt", "M4 Carbine", "5.56mm", false, "1099.99", Big))
+	l = append(l, NewTag("Colt", "M4 Carbine", "5.56mm", true, "1099.99", Big))
+	l = append(l, NewTag("Smith & Wesson", "M&P-15", "5.56mm", true, "809.99", Big))
 	l = append(l, NewTag("Springfield", "Saint", "5.56mm", true, "879", Big))
 
 	l = append(l, NewTag("Glock", "G44", "22 LR", false, "389", Small))
