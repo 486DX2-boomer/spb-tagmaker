@@ -21,31 +21,6 @@ func main() {
 
 	fmt.Println("-- SPB Tagmaker --")
 
-	// -----------------TEST TAGS
-	// l = append(l, NewTag("Walther", "PPK", "380 Auto", false, "779.99", Small))
-	// l = append(l, NewTag("Colt", "M4 Carbine", "5.56mm", true, "1099.99", Big))
-	// l = append(l, NewTag("Smith & Wesson", "M&P-15", "5.56mm", true, "809.99", Big))
-	// l = append(l, NewTag("Springfield", "Saint", "5.56mm", true, "879", Big))
-
-	// l = append(l, NewTag("Glock", "G44", "22 LR", false, "389", Small))
-	// l = append(l, NewTag("Smith & Wesson", "617", "22 LR", true, "709.99", Small))
-	// l = append(l, NewTag("Kel Tec", "PMR 30", "22 WMR", true, "399", Small))
-
-	// l = append(l, NewTag("Ruger", "Wrangler", "22 LR", true, "199.99", Small))
-	// l = append(l, NewTag("Taurus", "Judge Tracker", "45 LC/410", true, "469", Small))
-	// l = append(l, NewTag("Charter Arms", "Lavender Lady", "38 Special", true, "414", Small))
-	// l = append(l, NewTag("Rock Island", "GI Standard CS", "45 ACP", true, "419", Small))
-	// l = append(l, NewTag("FN", "FNX-45 Tactical", "45 ACP", true, "1229.99", Small))
-	// l = append(l, NewTag("CZ", "97B", "45 ACP", true, "719.99", Small))
-	// l = append(l, NewTag("Smith & Wesson", "M&P 40 FDE", "40 S&W", true, "699", Small))
-	// l = append(l, NewTag("GSG", "GSG-16 Carbine", "22 LR", false, "349.99", Big))
-	// l = append(l, NewTag("HK", "HK 45c", "45 ACP", true, "779.99", Small))
-	// l = append(l, NewTag("Patriot Ordnance Factory", "Rebel", "22 LR", true, "649.99", Big))
-	// l = append(l, NewTag("Sig Sauer", "716I Tread Box", "7.62x51mm", true, "1699", Big))
-
-	// BuildDocument(l, NewDocument())
-	// -----------------TEST TAGS
-
 	http.HandleFunc("/", listTags) // setting router rule
 	http.HandleFunc("/addtagform", addTagForm)
 	http.HandleFunc("/addtag", addTag)
@@ -375,12 +350,6 @@ func uploadManufacturerLogo(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Println(logoFilename)
 
-	// tempFile, err := ioutil.TempFile("logos", logoFilename)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// defer tempFile.Close()
-
 	fileBytes, err := ioutil.ReadAll(file)
 	if err != nil {
 		fmt.Println(err)
@@ -406,9 +375,6 @@ func uploadManufacturerLogo(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	fmt.Fprintf(w, "File upload successful")
 	fmt.Fprintf(w, "<br><a href=/listtags/><button>Back</button></a>")
-
-	// clean up the temp file
-	// os.Remove(tempFile.Name())
 
 	// The redirect from this point does not work, I get "http: superfluous response.WriteHeader call from main.uploadManufacturerLogo (main.go:391)"
 	// http.Redirect(w, r, "/", 303)

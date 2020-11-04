@@ -80,7 +80,6 @@ func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
 		pdf.SetFont(SPBTagFont, "", (LongGunPriceFontSize - fontSizeOffset))
 		// Original cell width for the price was 270 points, this needs to be adjusted down to 200 so that the 99 cents fits in the tag
 		// Need to move the cell dimensions to constants
-		// pdf.Cell(270, 109, t.Price)
 		pdf.Cell(200, 109, t.Price)
 		pdf.SetFont(SPBTagFont, "", LongGunCentsFontSize)
 		pdf.Write(LongGunCentsFontSize, "99")
@@ -222,7 +221,6 @@ func (t Tag) Draw(zero Coord, pdf *gofpdf.Fpdf) {
 		pdf.SetFont(SPBTagFont, "", (LongGunPriceFontSize - fontSizeOffset))
 		// Original cell width for the price was 270 points, this needs to be adjusted down to 200 so that the 99 cents fits in the tag
 		// Need to move the cell dimensions to constants
-		// pdf.Cell(270, 109, t.Price)
 		pdf.Cell(200, 109, t.Price)
 		pdf.SetFont(SPBTagFont, "", LongGunCentsFontSize)
 		pdf.Write(LongGunCentsFontSize, "99")
