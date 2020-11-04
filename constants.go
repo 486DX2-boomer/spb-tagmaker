@@ -23,7 +23,7 @@ const LongGunSPBLogoWidth float64 = 129
 // LongGunManufacturerLogoWidth defines the width of the manufacturer's logo in pts
 const LongGunManufacturerLogoWidth float64 = 96
 
-// LongGunManufacturerLogoWidth defines the height of the manufacturer's logo in pts
+// LongGunManufacturerLogoHeight defines the height of the manufacturer's logo in pts
 const LongGunManufacturerLogoHeight float64 = 60
 
 // Font sizes and font family
