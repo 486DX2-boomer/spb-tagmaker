@@ -8,8 +8,8 @@ Feature list:
 - Runs on a server as a web app (access from devices other than the desk computer)
 - Display a list of all tags in queue
 - Add and delete price tags
-- Edit price tags *(Not implemented yet)*
-- Upload manufacturer logos *(Not implemented yet)*
+- Edit price tags
+- Upload manufacturer logos
 - Query Google Images for manufacturer logos automatically *(Not implemented yet)*
 - Generate more than one page of price tags at a time
 - If less than 10 2x3 / 3 3x5 tags on a page, leave the rest of the slots empty (saves on ink/toner when printing)
@@ -55,3 +55,10 @@ ____
 
 ## Package References
 https://godoc.org/github.com/jung-kurt/gofpdf
+
+## What's Coming
+
+- CSS styling to make the front end look pretty
+- Scrape manufacturer logos from Google Images
+- Show a list of uploaded manufacturer logos
+- Save tags for later (Handy for commonly stocked guns)
