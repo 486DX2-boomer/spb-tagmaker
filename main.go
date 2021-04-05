@@ -31,6 +31,7 @@ func main() {
 	http.HandleFunc("/edittagsave/", editTagSave)
 	http.HandleFunc("/uploadmanufacturerlogoform/", uploadManufacturerLogoForm)
 	http.HandleFunc("/uploadmanufacturerlogo/", uploadManufacturerLogo)
+	http.HandleFunc("/logodirectory/", logoDirectory)
 
 	err := http.ListenAndServe(ListenPort, nil) // setting listening port
 	if err != nil {
@@ -97,6 +98,7 @@ func listTags(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "<b><a href=/deletealltags> (Delete All Tags)</a></b>        ")
 	fmt.Fprintf(w, "<b><a href=/uploadmanufacturerlogoform>(Upload Manufacturer Logo)<a></b>        ")
 	fmt.Fprintf(w, "<b><a href=/generatepdf>(Generate PDF)</a></b>        ")
+	fmt.Fprintf(w, "<b><a href=/logodirectory>(Logo Directory)</a></b>        ")
 
 	fmt.Fprintf(w, "<p>")
 
@@ -399,5 +401,44 @@ func scrapeManufacturerLogo(w http.ResponseWriter, r *http.Request) {
 func generatePDF(w http.ResponseWriter, r *http.Request) {
 	BuildDocument(l, NewDocument())
 	http.ServeFile(w, r, "./output.pdf")
+
+}
+
+// logoDirectory displays a list of all logo images stored in /logos
+func logoDirectory(w http.ResponseWriter, r *http.Request) {
+
+	fmt.Fprintf(w, "<h1>Logo Directory</h1>")
+	fmt.Fprintf(w, "<b><a href=/>(Back)</b></a>        ")
+
+	fmt.Fprintf(w, "<p>")
+
+	// step 1: read every file in /logos
+	// step 2: add it to a slice of strings
+	// step 3: print it to the dom
+	// step 4: Rewrite this so it's not redundant because I could just use ReadDir to write files to the DOM without the intermediate step
+
+	var logoList []string
+
+	files, err := ioutil.ReadDir("./logos")
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	for _, file := range files {
+		logoList = append(logoList, file.Name())
+	}
+
+	if len(logoList) == 0 {
+		fmt.Fprintf(w, "<i>There are no logos uploaded to the directory yet. Add one with the Upload Manufacturer Logo button.</i>")
+	}
+
+	// List all tags in memory
+	for i := range logoList {
+
+		fmt.Fprintf(w, logoList[i])
+
+		fmt.Fprintf(w, "<br>")
+		// fmt.Fprintf(w, "</p>")
+	}
 
 }
