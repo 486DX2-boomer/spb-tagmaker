@@ -60,5 +60,4 @@ https://godoc.org/github.com/jung-kurt/gofpdf
 
 - CSS styling to make the front end look pretty
 - Scrape manufacturer logos from Google Images
-- Show a list of uploaded manufacturer logos
 - Save tags for later (Handy for commonly stocked guns)

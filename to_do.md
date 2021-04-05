@@ -5,4 +5,4 @@
 - [X] Add edit tag functionality
 - [ ] Add duplicate tag functionality
 - [ ] Make aspect ratios of logos pretty (prevent squashing and stretching)
-- [ ] Logo Directory
+- [x] Logo Directory
