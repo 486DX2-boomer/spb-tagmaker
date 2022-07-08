@@ -1,3 +1,8 @@
+# Portfolio Demo
+This branch `portfolio-demo` has been configured to act as a demo on Heroku.
+
+Because Heroku restarts its dyno periodically and does not maintain state or retain uploaded files, the heroku version is for demo purposes only and should not be used in production.
+
 # Shoot Point Blank - Tag Maker
 
 **SPB internal use only**

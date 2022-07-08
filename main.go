@@ -19,7 +19,14 @@ var l List
 
 func main() {
 
-	fmt.Println("-- SPB Tagmaker --")
+	fmt.Println("-- Tag Maker --")
+
+	// add some dummy data to the list
+	l = append(l, Tag{Manufacturer: "Colt", Model: "1911", Caliber: "45 ACP", Price: "1199", New: true, TagSize: Small})
+	l = append(l, Tag{Manufacturer: "Smith & Wesson", Model: "642", Caliber: "38 Spl", Price: "599", New: true, TagSize: Small})
+	l = append(l, Tag{Manufacturer: "Beretta", Model: "84 Cheetah", Caliber: "380 ACP", Price: "749", New: false, TagSize: Small})
+	l = append(l, Tag{Manufacturer: "Charles Daly", Model: "500", Caliber: ".410", Price: "729", New: false, TagSize: Big})
+	l = append(l, Tag{Manufacturer: "Remington", Model: "870 Express", Caliber: "12 GA", Price: "429", New: true, TagSize: Big})
 
 	http.HandleFunc("/", listTags) // setting router rule
 	http.HandleFunc("/addtagform", addTagForm)
@@ -91,7 +98,7 @@ func NewDocument() *gofpdf.Fpdf {
 // listTags is the main menu of the UI
 func listTags(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Fprintf(w, "<h1>SPB Tag Maker</h1>")
+	fmt.Fprintf(w, "<h1>Tag Maker</h1>")
 
 	// UI Controls
 	fmt.Fprintf(w, "<b><a href=/addtagform>(Add Tag)</b></a>        ")

@@ -1,7 +1,9 @@
 package main
 
+import "os"
+
 // ListenPort defines the listen port of the http server
-const ListenPort string = ":8080"
+var ListenPort string = (":" + os.Getenv("PORT"))
 
 // Tag size. Big = 3x5". Small = 2x3"
 const (
